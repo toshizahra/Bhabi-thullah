@@ -13,9 +13,16 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Bhabhi Thulla</title>
+<script>
+window.__errs=[];
+function __showBootErr(msg){ var el=document.getElementById('bootErr'); if(!el) return; el.querySelector('p').textContent=msg; el.style.display='flex'; }
+window.addEventListener('error',function(e){ window.__errs.push((e.message||'Script error')+(e.lineno?' (line '+e.lineno+')':'')); if(!window.__booted) __showBootErr('Error: '+window.__errs.join(' | ')); });
+setTimeout(function(){ if(!window.__booted) __showBootErr(window.__errs.length?('Error: '+window.__errs.join(' | ')):'Loading is taking too long. Tap Reload. If it keeps happening, re-upload index.html to GitHub using "Upload files" (not copy-paste).'); },7000);
+function __hardReload(){ try{ if(navigator.serviceWorker) navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){x.unregister();}); }); if(window.caches) caches.keys().then(function(k){ k.forEach(function(n){caches.delete(n);}); }); }catch(e){} setTimeout(function(){ location.reload(); },400); }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 :root{
   --bg:#0A1118; --bg2:#122230; --panel:rgba(255,255,255,.045); --line:rgba(212,175,55,.28);
@@ -70,6 +77,7 @@ label.lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var
 .bar{width:220px;height:3px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));transition:width .2s}
 #splash .credit{position:absolute;bottom:22px}
+.bootErr{display:none;flex-direction:column;align-items:center;gap:10px;max-width:420px;text-align:center;font-size:13px;color:#FF9AA0;padding:0 16px}
 #splash.hide{opacity:0;transition:opacity .5s;pointer-events:none}
 
 /* ---------- home ---------- */
@@ -231,26 +239,4 @@ label.lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var
   <svg class="crest"><use href="#crest"/></svg>
   <div class="ttl">BHABHI THULLA<small>Classic card game</small></div>
   <div class="bar"><i id="barFill"></i></div>
-  <div class="credit">Made By <b>Toshi</b> With Pleasure</div>
-</section>
-
-<!-- HOME -->
-<section id="home" class="screen">
-  <div class="homegrid">
-    <div class="brand">
-      <div class="fan" id="fan"><i></i><i></i><i></i></div>
-      <div class="ttl">BHABHI<br>THULLA<small>The last one holding cards loses</small></div>
-    </div>
-    <div class="panel">
-      <label class="lbl" for="name">Your name</label>
-      <input id="name" maxlength="12" placeholder="Enter your name" autocomplete="off">
-      <label class="lbl">Opponents (vs computer)</label>
-      <div class="seg" id="botSeg"></div>
-      <button class="btn emer" id="offlineBtn">Play vs Computer</button>
-      <div class="divider">Online with friends</div>
-      <button class="btn" id="createBtn">Create Room</button>
-      <div class="row">
-        <input id="codeIn" maxlength="5" placeholder="CODE" autocomplete="off" aria-label="Room code">
-        <button class="btn sec" id="joinBtn" style="flex:none">Join</button>
-      </div>
-      <button class="btn sec sm" id="installBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-
+  <div class="bootErr"
