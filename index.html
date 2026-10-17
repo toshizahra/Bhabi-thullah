@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1B2340">
+<title>Bhabhi Thulla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1B2340; --rug:#2A3561; --rug2:#34407A; --marigold:#F2A93B; --ivory:#FFF8EC;
+  --ink:#1C1A24; --red:#C8323B; --teal:#5FB8B4; --muted:#A9B0D0;
+  --font:'Baloo 2', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--font); color:var(--ivory); background:var(--night);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(242,169,59,.05) 0 2px, transparent 2px 22px),
+    repeating-linear-gradient(-45deg, rgba(95,184,180,.05) 0 2px, transparent 2px 22px);
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  overflow:hidden; user-select:none;
+}
+button{font-family:inherit;cursor:pointer;border:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.screen{display:none;height:100%;flex-direction:column}
+.screen.on{display:flex}
+
+/* ---------- home ---------- */
+#home{align-items:center;justify-content:center;padding:24px;gap:28px;text-align:center}
+.logo{position:relative;width:170px;height:120px}
+.logo .c{position:absolute;width:78px;height:108px;background:var(--ivory);border-radius:10px;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.logo .c:nth-child(1){left:6px;transform:rotate(-14deg);color:var(--ink)}
+.logo .c:nth-child(2){left:46px;top:-6px;z-index:2;color:var(--red)}
+.logo .c:nth-child(3){left:86px;transform:rotate(14deg)}
+h1{font-size:46px;line-height:1;font-weight:800;color:var(--marigold);letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:17px;margin-top:6px}
+.panel{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+input{font-family:inherit;font-size:19px;padding:13px 16px;border-radius:14px;border:2px solid var(--rug2);
+  background:var(--rug);color:var(--ivory);width:100%}
+input::placeholder{color:var(--muted)}
+.btn{font-size:19px;font-weight:700;padding:13px;border-radius:14px;background:var(--marigold);color:var(--ink);
+  box-shadow:0 4px 0 #B57816;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #B57816}
+.btn.ghost{background:transparent;color:var(--ivory);border:2px solid var(--rug2);box-shadow:none}
+.row{display:flex;gap:10px}
+.row input{text-transform:uppercase;letter-spacing:3px;text-align:center}
+.or{color:var(--muted);font-size:15px}
+
+/* ---------- lobby ---------- */
+#lobby{padding:24px;gap:18px;align-items:center;overflow:auto}
+.code-box{background:var(--rug);border:2px dashed var(--marigold);border-radius:18px;padding:16px 26px;text-align:center}
+.code-box small{color:var(--muted);font-size:15px}
+.code-box b{display:block;font-size:44px;letter-spacing:8px;color:var(--marigold);line-height:1.1}
+.plist{width:100%;max-width:360px;display:flex;flex-direction:column;gap:8px}
+.pitem{display:flex;align-items:center;gap:12px;background:var(--rug);padding:10px 14px;border-radius:12px;font-size:18px}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--ink);flex:none}
+.tag{margin-left:auto;font-size:13px;color:var(--marigold)}
+.hint{color:var(--muted);font-size:15px;text-align:center;max-width:340px}
+
+/* ---------- game ---------- */
+#game{height:100%}
+.top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;font-size:15px;color:var(--muted)}
+.top b{color:var(--marigold);letter-spacing:2px}
+.top button{background:none;color:var(--muted);font-size:15px}
+.opps{display:flex;gap:8px;overflow-x:auto;padding:4px 12px 10px;scrollbar-width:none}
+.opps::-webkit-scrollbar{display:none}
+.opp{flex:none;min-width:78px;background:var(--rug);border-radius:14px;padding:8px 10px;text-align:center;border:2px solid transparent;position:relative}
+.opp.turn{border-color:var(--marigold);box-shadow:0 0 0 4px rgba(242,169,59,.18)}
+.opp.out{opacity:.5}
+.opp .av{margin:0 auto 4px;width:34px;height:34px}
+.opp .nm{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.opp .ct{font-size:13px;color:var(--muted)}
+.opp .dc{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+.table{flex:1;position:relative;margin:0 12px;border-radius:28px;
+  background:radial-gradient(ellipse at center, var(--rug2) 0%, var(--rug) 70%);
+  border:3px solid rgba(242,169,59,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:180px}
+.lead{font-size:15px;color:var(--muted)}
+.lead span{font-size:22px;vertical-align:middle}
+.trick{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:0 10px;max-width:100%}
+.tc{display:flex;flex-direction:column;align-items:center;gap:3px;animation:drop .25s ease-out}
+.tc small{font-size:12px;color:var(--muted);max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@keyframes drop{from{transform:translateY(-14px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+.status{font-size:20px;font-weight:700;text-align:center;padding:0 16px;min-height:30px}
+.status.me{color:var(--marigold)}
+
+.stamp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0}
+.stamp b{font-size:64px;font-weight:800;color:var(--red);background:var(--ivory);padding:0 22px;border-radius:14px;
+  border:5px solid var(--red);transform:rotate(-10deg);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.stamp.go{animation:stamp 2.2s ease-out}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4)}12%{opacity:1;transform:scale(.95)}18%{transform:scale(1.05)}24%{transform:scale(1)}80%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.stamp.go{animation:none;opacity:1}.tc{animation:none}}
+
+.log{font-size:13px;color:var(--muted);padding:8px 16px 4px;height:42px;overflow:hidden;text-align:center}
+
+.handwrap{padding:8px 0 12px;position:relative}
+.myname{display:flex;justify-content:space-between;padding:0 16px 6px;font-size:15px;color:var(--muted)}
+.myname b{color:var(--ivory)}
+.hand{display:flex;overflow-x:auto;padding:22px 16px 6px;scrollbar-width:none}
+.hand::-webkit-scrollbar{display:none}
+.hand .card{margin-left:-26px;flex:none;transition:transform .12s}
+.hand .card:first-child{margin-left:0}
+.hand .card.ok{cursor:pointer}
+.hand .card.no{filter:brightness(.55)}
+.hand .card.sel{transform:translateY(-20px)}
+.hand.myturn .card.ok{box-shadow:0 0 0 2px var(--marigold),0 4px 10px rgba(0,0,0,.35)}
+
+.card{width:58px;height:84px;background:var(--ivory);border-radius:9px;color:var(--ink);position:relative;
+  box-shadow:0 4px 10px rgba(0,0,0,.35);font-weight:800}
+.card.r{color:var(--red)}
+.card .tl{position:absolute;top:3px;left:6px;font-size:17px;line-height:1;text-align:center}
+.card .tl i{display:block;font-style:normal;font-size:15px}
+.card .md{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px}
+.card.thulla{outline:3px solid var(--red);transform:rotate(8deg)}
+.card.sm{width:50px;height:72px}
+.card.sm .md{font-size:26px}
+
+/* ---------- overlay ---------- */
+.ov{position:fixed;inset:0;background:rgba(15,19,36,.88);display:none;align-items:center;justify-content:center;padding:24px;z-index:20}
+.ov.on{display:flex}
+.res{background:var(--rug);border-radius:22px;padding:24px;width:100%;max-width:360px;text-align:center;display:flex;flex-direction:column;gap:14px}
+.res .big{font-size:56px;line-height:1}
+.res h2{font-size:30px;color:var(--marigold);line-height:1.1}
+.res ol{text-align:left;padding-left:24px;font-size:17px;color:var(--muted)}
+
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);
+  background:var(--red);color:#fff;padding:10px 18px;border-radius:12px;font-size:16px;opacity:0;transition:.25s;z-index:30;max-width:90%;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.conn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--teal);color:var(--ink);
+  padding:8px 16px;border-radius:12px;font-size:15px;font-weight:600;display:none;z-index:40;max-width:92%;text-align:center}
+.conn.on{display:block}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<section id="home" class="screen on">
+  <div class="logo" aria-hidden="true"><div class="c">♠</div><div class="c">♥</div><div class="c">♣</div></div>
+  <div>
+    <h1>Bhabhi Thulla</h1>
+    <p class="sub">Dosto ke sath online khelo. Jo aakhir mein bacha, woh Bhabhi.</p>
+  </div>
+  <div class="panel">
+    <input id="name" maxlength="14" placeholder="Apna naam likho" autocomplete="off">
+    <button class="btn" id="createBtn">Naya room banao</button>
+    <span class="or">ya dost ka room join karo</span>
+    <div class="row">
+      <input id="codeIn" maxlength="5" placeholder="CODE" autocomplete="off">
+      <button class="btn" id="joinBtn" style="flex:none;padding:13px 22px">Join</button>
+    </div>
+  </div>
+</section>
+
+<!-- LOBBY -->
+<section id="lobby" class="screen">
+  <div class="code-box"><small>Room code</small><b id="lCode">-----</b></div>
+  <button class="btn ghost" id="shareBtn">Dosto ko link bhejo</button>
+  <div class="plist" id="lPlayers"></div>
+  <p class="hint" id="lHint"></p>
+  <div class="panel">
+    <button class="btn" id="startBtn">Game shuru karo</button>
+    <button class="btn ghost" id="leaveBtn">Room chhoro</button>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="screen">
+  <div class="top"><span>Room <b id="gCode"></b></span><button id="gLeave">Chhoro</button></div>
+  <div class="opps" id="opps"></div>
+  <div class="table">
+    <div class="lead" id="lead"></div>
+    <div class="trick" id="trick"></div>
+    <div class="status" id="status"></div>
+    <div class="stamp" id="stamp"><b>THULLA!</b></div>
+  </div>
+  <div class="log" id="log"></div>
+  <div class="handwrap">
+    <div class="myname"><span><b id="myName"></b> (aap)</span><span id="myCount"></span></div>
+    <div class="hand" id="hand"></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<div class="ov" id="ov">
+  <div class="res">
+    <div class="big">😂</div>
+    <h2 id="rTitle"></h2>
+    <ol id="rList"></ol>
+    <button class="btn" id="againBtn">Dobara khelo</button>
+    <p class="hint" id="rWait"></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="conn" id="conn">Server jag raha hai, 1 minute tak lag sakta hai...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+// 👇 YAHAN APNA RENDER BACKEND LINK DAALO (aakhir mein / mat lagana)
+const BACKEND_URL = 'https://bhabi-thulla-server-production.up.railway.app';
+const socket = io(BACKEND_URL, { transports: ['websocket', 'polling'] });
+
+// Render free server so jata hai, pehli dafa jagne mein ~1 minute lagta hai
+let wakeTimer = setTimeout(() => { $('conn').classList.add('on'); }, 1500);
+socket.on('connect', () => { clearTimeout(wakeTimer); $('conn').classList.remove('on'); });
+socket.on('disconnect', () => { $('conn').textContent = 'Connection gaya, dobara jod rahe hain...'; $('conn').classList.add('on'); });
+const SYM = {S:'♠',H:'♥',D:'♦',C:'♣'};
+const RANK = {11:'J',12:'Q',13:'K',14:'A'};
+const COLORS = ['#F2A93B','#5FB8B4','#E07A8A','#9FD16B','#C79BF2','#F5D76E','#7FB2F0','#F29B6B'];
+
+function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null}}
+function unstore(k){try{localStorage.removeItem(k)}catch(e){}}
+let token = store('bt_token');
+if(!token){ token = Math.random().toString(36).slice(2)+Date.now().toString(36); store('bt_token',token); }
+
+let S = null, selected = null, lastEventT = 0, lastTurnMine = false;
+
+$('name').value = store('bt_name') || '';
+const urlRoom = new URLSearchParams(location.search).get('room');
+if(urlRoom) $('codeIn').value = urlRoom.toUpperCase();
+
+function getName(){
+  const n = $('name').value.trim();
+  if(!n){ toast('Pehle apna naam likho'); $('name').focus(); return null; }
+  store('bt_name', n); return n;
+}
+$('createBtn').onclick = () => { const n=getName(); if(n) socket.emit('create',{name:n,token}); };
+$('joinBtn').onclick = () => {
+  const n=getName(); if(!n) return;
+  const c=$('codeIn').value.trim().toUpperCase();
+  if(c.length<5) return toast('5 akshar ka room code daalo');
+  socket.emit('join',{code:c,name:n,token});
+};
+$('codeIn').addEventListener('keydown',e=>{ if(e.key==='Enter') $('joinBtn').click(); });
+$('startBtn').onclick = () => socket.emit('start');
+$('againBtn').onclick = () => socket.emit('start');
+function leaveRoom(){
+  if(S && S.state==='playing' && !confirm('Game chhorna hai? Aapke cards baaki logon ko mil jayenge')) return;
+  socket.emit('leave'); unstore('bt_room'); S=null; show('home');
+  history.replaceState(null,'',location.pathname);
+}
+$('leaveBtn').onclick = leaveRoom; $('gLeave').onclick = leaveRoom;
+$('shareBtn').onclick = async () => {
+  const link = location.origin + location.pathname + '?room=' + S.code;
+  const text = `Bhabhi Thulla khelne aao! Room code: ${S.code}\n${link}`;
+  if(navigator.share){ try{ await navigator.share({title:'Bhabhi Thulla',text,url:link}); return; }catch(e){} }
+  try{ await navigator.clipboard.writeText(text); toast('Link copy ho gaya, WhatsApp pe bhej do'); }
+  catch(e){ prompt('Ye link copy karo:', link); }
+};
+
+// auto rejoin after refresh / net drop
+socket.on('connect', () => {
+  const r = store('bt_room'), n = store('bt_name');
+  if(r && n) socket.emit('join',{code:r,name:n,token});
+});
+socket.on('err', msg => {
+  toast(msg);
+  if(msg.startsWith('Room nahi mila')){ unstore('bt_room'); show('home'); }
+});
+socket.on('state', st => { S = st; store('bt_room', st.code); render(); });
+
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on', s.id===id)); }
+let tt; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('on'),2200); }
+const colorOf = id => COLORS[S.players.findIndex(p=>p.id===id) % COLORS.length];
+const nameOf = id => (S.players.find(p=>p.id===id)||{}).name || '?';
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cardId = c => c.s + c.r;
+
+function cardHTML(c, cls=''){
+  const red = c.s==='H'||c.s==='D' ? ' r' : '';
+  const rk = RANK[c.r] || c.r;
+  return `<div class="card${red} ${cls}" data-id="${cardId(c)}"><div class="tl">${rk}<i>${SYM[c.s]}</i></div><div class="md">${SYM[c.s]}</div></div>`;
+}
+
+function render(){
+  if(!S) return;
+  if(S.state==='lobby'){ show('lobby'); renderLobby(); $('ov').classList.remove('on'); return; }
+  show('game'); renderGame();
+  if(S.state==='over') renderResult(); else $('ov').classList.remove('on');
+}
+
+function renderLobby(){
+  $('lCode').textContent = S.code;
+  $('lPlayers').innerHTML = S.players.map(p=>`
+    <div class="pitem"><div class="av" style="background:${colorOf(p.id)}">${esc(p.name[0].toUpperCase())}</div>
+    ${esc(p.name)}${p.id===S.you?' (aap)':''}<span class="tag">${p.id===S.hostId?'Host':''}</span></div>`).join('');
+  const host = S.hostId===S.you;
+  $('startBtn').style.display = host ? '' : 'none';
+  $('lHint').textContent = S.players.length<2 ? 'Kam se kam 2 dost chahiye. Code ya link share karo.'
+    : host ? `${S.players.length} players tayyar. 3-6 log ho to maza zyada aata hai.` : 'Host ke game shuru karne ka intezar karo...';
+}
+
+function playable(c){
+  if(!S || S.turn!==S.you) return false;
+  if(S.trick.length===0) return S.firstTrick ? (c.s==='S'&&c.r===14) : true;
+  const has = S.hand.some(h=>h.s===S.leadSuit);
+  return has ? c.s===S.leadSuit : true;
+}
+
+function renderGame(){
+  $('gCode').textContent = S.code;
+  const me = S.players.find(p=>p.id===S.you);
+  $('myName').textContent = me ? me.name : '';
+  $('myCount').textContent = me && me.out ? 'Aap bach gaye ✅' : `${S.hand.length} cards`;
+
+  $('opps').innerHTML = S.players.filter(p=>p.id!==S.you).map(p=>`
+    <div class="opp${p.id===S.turn?' turn':''}${p.out?' out':''}">
+      ${p.connected?'':'<span class="dc" title="Offline"></span>'}
+      <div class="av" style="background:${colorOf(p.id)}">${esc(p.name[0].toUpperCase())}</div>
+      <div class="nm">${esc(p.name)}</div>
+      <div class="ct">${p.out?'Bach gaya':p.count+' cards'}</div>
+    </div>`).join('');
+
+  $('lead').innerHTML = S.leadSuit ? `Chaal: <span style="color:${S.leadSuit==='H'||S.leadSuit==='D'?'#E9707A':'#FFF8EC'}">${SYM[S.leadSuit]}</span>` : (S.firstTrick?'Pehli chaal (is mein thulla nahi lagta)':'Nayi chaal');
+  $('trick').innerHTML = S.trick.map(t=>`<div class="tc">${cardHTML(t.card, 'sm'+(t.thulla?' thulla':''))}<small>${esc(nameOf(t.pid))}</small></div>`).join('');
+
+  const myTurn = S.turn===S.you;
+  let st = '';
+  if(S.state==='over') st = 'Game khatam';
+  else if(S.resolving && S.lastEvent) st = S.lastEvent.type==='thulla' ? `${esc(S.lastEvent.to)} cards utha raha hai...` : `${esc(S.lastEvent.to)} agli chaal chalega`;
+  else if(myTurn) st = selected ? 'Dobara tap karo card chalne ke liye' : 'Aapki baari! Card chuno';
+  else if(S.turn) st = `${esc(nameOf(S.turn))} soch raha hai...`;
+  $('status').innerHTML = st; $('status').classList.toggle('me', myTurn);
+
+  if(myTurn && !lastTurnMine && navigator.vibrate) navigator.vibrate(60);
+  lastTurnMine = myTurn;
+  if(!myTurn) selected = null;
+
+  const hand = $('hand');
+  hand.classList.toggle('myturn', myTurn);
+  hand.innerHTML = S.hand.map(c=>{
+    const ok = playable(c);
+    return cardHTML(c, (myTurn?(ok?'ok':'no'):'') + (selected===cardId(c)?' sel':''));
+  }).join('');
+
+  $('log').innerHTML = S.log.slice(-2).map(esc).join('<br>');
+
+  if(S.lastEvent && S.lastEvent.type==='thulla' && S.lastEvent.t!==lastEventT){
+    const sp=$('stamp'); sp.classList.remove('go'); void sp.offsetWidth; sp.classList.add('go');
+    if(navigator.vibrate) navigator.vibrate([80,40,120]);
+  }
+  if(S.lastEvent) lastEventT = S.lastEvent.t;
+}
+
+$('hand').addEventListener('click', e=>{
+  const el = e.target.closest('.card'); if(!el || !S) return;
+  if(S.turn!==S.you) return toast('Abhi aapki baari nahi');
+  const id = el.dataset.id;
+  const c = S.hand.find(h=>cardId(h)===id);
+  if(!playable(c)){
+    if(S.firstTrick && S.trick.length===0) return toast('Pehli chaal Ekka Hukum ♠ se hogi');
+    return toast(`${SYM[S.leadSuit]} ka card chalna zaroori hai`);
+  }
+  if(selected===id){ selected=null; socket.emit('play',{cardId:id}); }
+  else { selected=id; renderGame(); }
+});
+
+function renderResult(){
+  const b = S.bhabhi ? nameOf(S.bhabhi) : null;
+  $('rTitle').textContent = b ? (S.bhabhi===S.you ? 'Aap Bhabhi ban gaye!' : `${b} Bhabhi ban gaya!`) : 'Draw! Koi Bhabhi nahi bana';
+  $('rList').innerHTML = S.finishOrder.map(id=>`<li>${esc(nameOf(id))}${id===S.you?' (aap)':''}</li>`).join('');
+  const host = S.hostId===S.you;
+  $('againBtn').style.display = host ? '' : 'none';
+  $('rWait').textContent = host ? '' : 'Host dobara game shuru karega...';
+  $('ov').classList.add('on');
+}
+</script>
+</body>
+</html>
