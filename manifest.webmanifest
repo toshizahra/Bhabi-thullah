@@ -1,0 +1,19 @@
+{
+  "name": "Bhabhi Thulla",
+  "short_name": "Bhabhi Thulla",
+  "description": "The classic Bhabhi Thulla card game. Play online with friends or offline against the computer. Made By Toshi With Pleasure.",
+  "id": "./",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#0A1118",
+  "theme_color": "#0A1118",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
