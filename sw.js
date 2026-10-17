@@ -1,6 +1,6 @@
 // Bhabhi Thulla service worker - Made By Toshi With Pleasure
 // Bump this version whenever you upload new files
-const CACHE = 'bhabhi-thulla-v5';
+const CACHE = 'bhabhi-thulla-v6';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 const CDN = [];
 
