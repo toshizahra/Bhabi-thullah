@@ -1,11 +1,11 @@
 // Bhabhi Thulla service worker - Made By Toshi With Pleasure
 // Bump this version whenever you upload new files
-const CACHE = 'bhabhi-thulla-v4';
+const CACHE = 'bhabhi-thulla-v5';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
-const CDN = ['https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js'];
+const CDN = [];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).then(() => c.addAll(CDN).catch(() => {}))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
