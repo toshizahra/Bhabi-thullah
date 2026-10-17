@@ -239,4 +239,642 @@ label.lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var
   <svg class="crest"><use href="#crest"/></svg>
   <div class="ttl">BHABHI THULLA<small>Classic card game</small></div>
   <div class="bar"><i id="barFill"></i></div>
-  <div class="bootErr"
+  <div class="bootErr" id="bootErr"><p></p><button class="btn sm" onclick="__hardReload()">Reload</button></div>
+  <div class="credit">Made By <b>Toshi</b> With Pleasure</div>
+</section>
+
+<!-- HOME -->
+<section id="home" class="screen">
+  <div class="homegrid">
+    <div class="brand">
+      <div class="fan" id="fan"><i></i><i></i><i></i></div>
+      <div class="ttl">BHABHI<br>THULLA<small>The last one holding cards loses</small></div>
+    </div>
+    <div class="panel">
+      <label class="lbl" for="name">Your name</label>
+      <input id="name" maxlength="12" placeholder="Enter your name" autocomplete="off">
+      <label class="lbl">Opponents (vs computer)</label>
+      <div class="seg" id="botSeg"></div>
+      <button class="btn emer" id="offlineBtn">Play vs Computer</button>
+      <div class="divider">Online with friends</div>
+      <button class="btn" id="createBtn">Create Room</button>
+      <div class="row">
+        <input id="codeIn" maxlength="5" placeholder="CODE" autocomplete="off" aria-label="Room code">
+        <button class="btn sec" id="joinBtn" style="flex:none">Join</button>
+      </div>
+      <button class="btn sec sm" id="installBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install App</button>
+      <div class="credit" style="text-align:center">Made By <b>Toshi</b> With Pleasure</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOBBY -->
+<section id="lobby" class="screen">
+  <div class="codebox"><small>Room code</small><b id="lCode">-----</b></div>
+  <div class="plist" id="lPlayers"></div>
+  <p class="hint" id="lHint"></p>
+  <div class="row" style="flex-wrap:wrap;justify-content:center">
+    <button class="btn sec" id="shareBtn">Invite Friends</button>
+    <button class="btn" id="startBtn">Start Game</button>
+    <button class="btn sec" id="leaveBtn">Leave</button>
+  </div>
+  <div class="credit">Made By <b>Toshi</b> With Pleasure</div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="screen">
+  <canvas id="tableCv"></canvas>
+  <div class="pile" id="pile"></div>
+  <div class="layer" id="fx"></div>
+  <div class="layer" id="sprites"></div>
+  <div class="layer" id="seats"></div>
+  <div class="seat" id="me"></div>
+  <div class="statusPill" id="status"></div>
+  <div class="flash" id="flash"></div>
+  <div class="stamp" id="stamp"><b>THULLA!</b><span id="stampSub"></span></div>
+  <div class="tbar">
+    <button class="ibtn" id="backBtn" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="ibtn" id="emoBtn" aria-label="Reactions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2M9 9.5h.01M15 9.5h.01"/></svg></button>
+    <button class="ibtn" id="rulesBtn" aria-label="Rules"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.2a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.5M12 16.8h.01"/></svg></button>
+  </div>
+  <div class="tbar right">
+    <div class="roomtag" id="roomtag"></div>
+    <button class="ibtn" id="soundBtn" aria-label="Sound"><svg viewBox="0 0 24 24"><path d="M4 10v4h3l5 4V6L7 10H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
+    <button class="ibtn" id="fsBtn" aria-label="Full screen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+  </div>
+  <div class="emojis" id="emojis"></div>
+
+  <div class="ov" id="resOv"><div class="box">
+    <div class="big" id="rEmoji">😂</div>
+    <h2 id="rTitle"></h2>
+    <ol id="rList"></ol>
+    <button class="btn" id="againBtn">Play Again</button>
+    <button class="btn sec" id="homeBtn">Main Menu</button>
+    <p class="hint" id="rWait"></p>
+  </div></div>
+  <div class="ov" id="rulesOv"><div class="box">
+    <h2>How to Play</h2>
+    <div class="rules">
+      <p>All 52 cards are dealt. Whoever holds the <b>Ace of Spades ♠</b> leads the first trick.</p>
+      <p>Everyone must <b>follow the suit</b> that was led, if they can.</p>
+      <p>If everyone follows suit, the trick is discarded and the highest card leads next.</p>
+      <p>If you can't follow suit, throw any other card. That's a <b>THULLA!</b> The player with the highest card of the led suit picks up the whole trick.</p>
+      <p>No Thulla can happen on the first trick.</p>
+      <p>Empty your hand to be safe. The <b>last player holding cards is the Bhabhi</b>.</p>
+      <p><b>To play:</b> swipe a card up onto the table, or tap it twice.</p>
+    </div>
+    <button class="btn" id="rulesClose">Got it</button>
+  </div></div>
+</section>
+
+<div class="ov" id="iosOv"><div class="box">
+  <h2>Install the App</h2>
+  <p class="hint" style="max-width:none">On iPhone, tap the <b style="color:var(--gold-hi)">Share</b> button in Safari, then choose <b style="color:var(--gold-hi)">Add to Home Screen</b>.</p>
+  <button class="btn" id="iosClose">OK</button>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="conn" id="conn"></div>
+</div>
+
+<script>
+// Online server link (no trailing slash)
+const BACKEND_URL = 'https://bhabi-thulla-server-production.up.railway.app';
+// Made By Toshi With Pleasure
+
+const $ = id => document.getElementById(id);
+const SUITS = ['S','H','D','C'];
+const SYM = {S:'♠',H:'♥',D:'♦',C:'♣'};
+const SNAME = {S:'Spades',H:'Hearts',D:'Diamonds',C:'Clubs'};
+const RANK = {11:'J',12:'Q',13:'K',14:'A'};
+const EMOJIS = ['😂','😡','😎','🔥','👏','😭','🤫','💥'];
+const AVBG = ['linear-gradient(145deg,#8E3B52,#4A1626)','linear-gradient(145deg,#2F5E8C,#14304E)','linear-gradient(145deg,#2F7A55,#123D29)',
+  'linear-gradient(145deg,#7A5A2A,#3E2C10)','linear-gradient(145deg,#5B4A8E,#2A1F4E)','linear-gradient(145deg,#2A7378,#103A3E)',
+  'linear-gradient(145deg,#8A4630,#45200F)','linear-gradient(145deg,#4F5A66,#232A31)'];
+const BOTS = ['Ali','Sana','Bilal','Hina','Kamran','Zoya','Fahad'];
+const RING = '<svg class="ring" viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3DB94"/><stop offset="1" stop-color="#F3DB94" stop-opacity="0"/></linearGradient></defs><circle cx="50" cy="50" r="46" fill="none" stroke="url(#rg)" stroke-width="4" stroke-linecap="round" stroke-dasharray="210 80"/></svg>';
+
+function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null}}
+function unstore(k){try{localStorage.removeItem(k)}catch(e){}}
+let token=store('bt_token'); if(!token){ token=Math.random().toString(36).slice(2)+Date.now().toString(36); store('bt_token',token); }
+
+let S=null, PS=null, selected=null, lastEventT=0, lastTurnMine=false, local=null, socket=null;
+let soundOn=store('bt_sound')!=='0', botCount=Number(store('bt_bots')||3);
+const cid=c=>c.s+c.r;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function sortHand(h){ const o={S:0,H:1,C:2,D:3}; h.sort((a,b)=>o[a.s]-o[b.s]||a.r-b.r); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+let tt; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('on'),1900); }
+
+/* ================= CARD ART ================= */
+const CW=200, CH=284, ART={};
+function rr(x,y,w,h,r){ const c=new Path2D(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); return c; }
+function suitPath(s,x,y,z){
+  const p=new Path2D();
+  const heart=(p,x,y,z,flip)=>{ const f=flip?-1:1; p.moveTo(x,y+z*.46*f);
+    p.bezierCurveTo(x-z*.15,y+z*.28*f,x-z*.52,y+z*.06*f,x-z*.52,y-z*.16*f); p.bezierCurveTo(x-z*.52,y-z*.44*f,x-z*.12,y-z*.52*f,x,y-z*.24*f);
+    p.bezierCurveTo(x+z*.12,y-z*.52*f,x+z*.52,y-z*.44*f,x+z*.52,y-z*.16*f); p.bezierCurveTo(x+z*.52,y+z*.06*f,x+z*.15,y+z*.28*f,x,y+z*.46*f); p.closePath(); };
+  const stem=(p,x,y,z)=>{ p.moveTo(x,y+z*.1); p.quadraticCurveTo(x-z*.04,y+z*.38,x-z*.24,y+z*.5); p.lineTo(x+z*.24,y+z*.5); p.quadraticCurveTo(x+z*.04,y+z*.38,x,y+z*.1); p.closePath(); };
+  if(s==='H') heart(p,x,y+z*.02,z,false);
+  else if(s==='S'){ heart(p,x,y-z*.06,z*.92,true); stem(p,x,y,z); }
+  else if(s==='D'){ p.moveTo(x,y-z*.52); p.quadraticCurveTo(x+z*.16,y-z*.16,x+z*.4,y); p.quadraticCurveTo(x+z*.16,y+z*.16,x,y+z*.52); p.quadraticCurveTo(x-z*.16,y+z*.16,x-z*.4,y); p.quadraticCurveTo(x-z*.16,y-z*.16,x,y-z*.52); p.closePath(); }
+  else { const r=z*.21; [[0,-.25],[-.25,.05],[.25,.05]].forEach(([a,b])=>{ p.moveTo(x+a*z+r,y+b*z); p.arc(x+a*z,y+b*z,r,0,Math.PI*2); }); p.moveTo(x+z*.12,y); p.arc(x,y,z*.14,0,Math.PI*2); stem(p,x,y+z*.02,z*.95); }
+  return p;
+}
+const isRed=s=>s==='H'||s==='D';
+function cardCanvas(){ const c=document.createElement('canvas'); c.width=CW; c.height=CH; return [c,c.getContext('2d')]; }
+function drawSuit(g,s,x,y,z,rot){ g.save(); g.translate(x,y); if(rot) g.rotate(Math.PI); g.fill(suitPath(s,0,0,z)); g.restore(); }
+function faceArt(c){
+  const [cv,g]=cardCanvas(), red=isRed(c.s), col=red?'#B8202C':'#14141A', shape=rr(1,1,CW-2,CH-2,15);
+  const bg=g.createLinearGradient(0,0,CW,CH); bg.addColorStop(0,'#FFFEFA'); bg.addColorStop(1,'#EFE8D8');
+  g.fillStyle=bg; g.fill(shape); g.lineWidth=2; g.strokeStyle='rgba(0,0,0,.2)'; g.stroke(shape);
+  g.save(); g.clip(shape); g.strokeStyle='rgba(156,116,40,.35)'; g.lineWidth=1.2; g.stroke(rr(7,7,CW-14,CH-14,10));
+  const rk=RANK[c.r]||String(c.r);
+  const idx=rot=>{ g.save(); if(rot){ g.translate(CW,CH); g.rotate(Math.PI); } g.fillStyle=col; g.textAlign='center';
+    g.font=`700 ${rk==='10'?38:44}px Georgia,'Times New Roman',serif`; g.fillText(rk,28,52); g.fill(suitPath(c.s,28,76,28)); g.restore(); };
+  idx(false); idx(true); g.fillStyle=col;
+  if(c.r<=10){
+    const L=.35,M=.5,R=.65,P={2:[[M,.21],[M,.79]],3:[[M,.21],[M,.5],[M,.79]],4:[[L,.21],[R,.21],[L,.79],[R,.79]],5:[[L,.21],[R,.21],[M,.5],[L,.79],[R,.79]],
+      6:[[L,.21],[R,.21],[L,.5],[R,.5],[L,.79],[R,.79]],7:[[L,.21],[R,.21],[M,.355],[L,.5],[R,.5],[L,.79],[R,.79]],
+      8:[[L,.21],[R,.21],[M,.355],[L,.5],[R,.5],[M,.645],[L,.79],[R,.79]],9:[[L,.21],[R,.21],[L,.4],[R,.4],[M,.5],[L,.6],[R,.6],[L,.79],[R,.79]],
+      10:[[L,.21],[R,.21],[M,.31],[L,.4],[R,.4],[L,.6],[R,.6],[M,.69],[L,.79],[R,.79]]}[c.r];
+    const z=c.r<=3?48:c.r<=6?42:37; P.forEach(([px,py])=>drawSuit(g,c.s,px*CW,py*CH,z,py>.5));
+  } else if(c.r===14){
+    if(c.s==='S'){ g.save(); g.strokeStyle='#B8902E'; g.lineWidth=3; g.beginPath(); g.arc(CW/2,CH/2,64,0,Math.PI*2); g.stroke();
+      g.lineWidth=1; g.beginPath(); g.arc(CW/2,CH/2,71,0,Math.PI*2); g.stroke(); g.restore(); g.fillStyle=col; }
+    drawSuit(g,c.s,CW/2,CH/2,c.s==='S'?94:84,false);
+  } else {
+    const th={11:['#24476E','#0F233A'],12:['#7A1E36','#3A0B18'],13:['#2B2B30','#0E0E12']}[c.r];
+    const fx=46,fy=48,fw=CW-92,fh=CH-96,fr=rr(fx,fy,fw,fh,8);
+    const fg=g.createLinearGradient(0,fy,0,fy+fh); fg.addColorStop(0,th[0]); fg.addColorStop(1,th[1]); g.fillStyle=fg; g.fill(fr);
+    g.save(); g.clip(fr); g.globalAlpha=.12; g.strokeStyle='#F3DB94'; g.lineWidth=1;
+    for(let i=-fh;i<fw+fh;i+=10){ g.beginPath(); g.moveTo(fx+i,fy); g.lineTo(fx+i-fh,fy+fh); g.stroke(); g.beginPath(); g.moveTo(fx+i-fh,fy); g.lineTo(fx+i,fy+fh); g.stroke(); } g.restore();
+    g.lineWidth=3; g.strokeStyle='#D9B45A'; g.stroke(fr); g.lineWidth=1; g.stroke(rr(fx+5,fy+5,fw-10,fh-10,5));
+    g.save(); g.translate(CW/2,fy+40); const gg=g.createLinearGradient(0,-22,0,14); gg.addColorStop(0,'#F3DB94'); gg.addColorStop(1,'#9C7428'); g.fillStyle=gg;
+    const cr=new Path2D(); cr.moveTo(-26,12); cr.lineTo(-30,-12); cr.lineTo(-14,0); cr.lineTo(0,-20); cr.lineTo(14,0); cr.lineTo(30,-12); cr.lineTo(26,12); cr.closePath(); g.fill(cr);
+    [-30,0,30].forEach((x,i)=>{ g.beginPath(); g.arc(x,i===1?-22:-14,4,0,Math.PI*2); g.fill(); }); g.restore();
+    g.fillStyle='#F3DB94'; g.textAlign='center'; g.textBaseline='middle'; g.font='700 66px Georgia,serif'; g.fillText(rk,CW/2,fy+fh*.56);
+    g.fillStyle=red?'#E0505A':'#F6F1E4'; drawSuit(g,c.s,CW/2,fy+fh-28,30,false);
+  }
+  g.restore(); return cv.toDataURL();
+}
+function backArt(){
+  const [cv,g]=cardCanvas(), shape=rr(1,1,CW-2,CH-2,15);
+  g.fillStyle='#F6F1E4'; g.fill(shape);
+  const inner=rr(8,8,CW-16,CH-16,10), bg=g.createLinearGradient(0,0,CW,CH); bg.addColorStop(0,'#1B3550'); bg.addColorStop(1,'#0A1726');
+  g.fillStyle=bg; g.fill(inner); g.save(); g.clip(inner); g.strokeStyle='rgba(217,180,90,.32)'; g.lineWidth=1.4;
+  for(let i=-CH;i<CW+CH;i+=14){ g.beginPath(); g.moveTo(i,0); g.lineTo(i+CH,CH); g.stroke(); g.beginPath(); g.moveTo(i,CH); g.lineTo(i+CH,0); g.stroke(); }
+  const v=g.createRadialGradient(CW/2,CH/2,10,CW/2,CH/2,CH*.7); v.addColorStop(0,'rgba(0,0,0,0)'); v.addColorStop(1,'rgba(0,0,0,.5)'); g.fillStyle=v; g.fillRect(0,0,CW,CH); g.restore();
+  g.lineWidth=2; g.strokeStyle='#D9B45A'; g.stroke(rr(15,15,CW-30,CH-30,7));
+  g.beginPath(); g.arc(CW/2,CH/2,44,0,Math.PI*2); g.fillStyle='#0E1A24'; g.fill(); g.lineWidth=3; g.stroke(); g.lineWidth=1; g.beginPath(); g.arc(CW/2,CH/2,37,0,Math.PI*2); g.stroke();
+  g.fillStyle='#D9B45A'; g.fill(suitPath('S',CW/2,CH/2,44)); return cv.toDataURL();
+}
+const faceURL=c=>{ const k=cid(c); return ART[k]||(ART[k]=faceArt(c)); };
+let BACK=null; const backURL=()=>BACK||(BACK=backArt());
+
+/* ================= TABLE ART ================= */
+let NOISE=null;
+function noisePattern(g){ if(!NOISE){ NOISE=document.createElement('canvas'); NOISE.width=NOISE.height=128; const n=NOISE.getContext('2d'), d=n.createImageData(128,128);
+  for(let i=0;i<d.data.length;i+=4){ const v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=18; } n.putImageData(d,0,0); } return g.createPattern(NOISE,'repeat'); }
+function stadium(x,y,w,h){ return rr(x,y,w,h,Math.min(h/2,w*.3)); }
+function drawTable(){
+  const cv=$('tableCv'), T=L.table, dpr=Math.min(window.devicePixelRatio||1,2), pad=16;
+  cv.style.left=(T.x-pad)+'px'; cv.style.top=(T.y-pad)+'px'; cv.style.width=(T.w+pad*2)+'px'; cv.style.height=(T.h+pad*2)+'px';
+  cv.width=(T.w+pad*2)*dpr; cv.height=(T.h+pad*2)*dpr;
+  const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+  const x=pad,y=pad,w=T.w,h=T.h,np=noisePattern(g), outer=stadium(x,y,w,h);
+  g.save(); g.shadowColor='rgba(0,0,0,.7)'; g.shadowBlur=26; g.shadowOffsetY=10;
+  const og=g.createLinearGradient(0,y,0,y+h); og.addColorStop(0,'#2A2A30'); og.addColorStop(1,'#111115'); g.fillStyle=og; g.fill(outer); g.restore();
+  g.lineWidth=1.5; g.strokeStyle='rgba(217,180,90,.5)'; g.stroke(outer);
+  const ri=Math.max(6,h*.035), rim=stadium(x+ri,y+ri,w-ri*2,h-ri*2);
+  const lg=g.createLinearGradient(0,y,0,y+h); lg.addColorStop(0,'#5A3520'); lg.addColorStop(.5,'#3E2214'); lg.addColorStop(1,'#26140A');
+  g.fillStyle=lg; g.fill(rim); g.fillStyle=np; g.fill(rim);
+  const hl=g.createLinearGradient(0,y,0,y+h*.5); hl.addColorStop(0,'rgba(255,220,180,.14)'); hl.addColorStop(1,'rgba(255,220,180,0)'); g.fillStyle=hl; g.fill(rim);
+  const fi=ri+Math.max(14,h*.08), fx=x+fi, fy=y+fi, fw=w-fi*2, fh=h-fi*2, felt=stadium(fx,fy,fw,fh);
+  g.save(); g.setLineDash([5,5]); g.lineWidth=1.2; g.strokeStyle='rgba(243,219,148,.22)'; g.stroke(stadium(x+ri+5,y+ri+5,w-(ri+5)*2,h-(ri+5)*2)); g.restore();
+  // gold inlay
+  g.lineWidth=2.5; g.strokeStyle='#B8902E'; g.stroke(stadium(fx-4,fy-4,fw+8,fh+8)); g.lineWidth=1; g.strokeStyle='rgba(243,219,148,.6)'; g.stroke(stadium(fx-7,fy-7,fw+14,fh+14));
+  const fg=g.createRadialGradient(fx+fw/2,fy+fh*.45,10,fx+fw/2,fy+fh/2,Math.max(fw,fh)*.62);
+  fg.addColorStop(0,'#2C8E55'); fg.addColorStop(.6,'#1A6B3D'); fg.addColorStop(1,'#0B3D22'); g.fillStyle=fg; g.fill(felt); g.fillStyle=np; g.fill(felt);
+  g.save(); g.clip(felt); g.shadowColor='rgba(0,0,0,.7)'; g.shadowBlur=18; g.lineWidth=10; g.strokeStyle='rgba(0,0,0,.6)'; g.stroke(stadium(fx-5,fy-5,fw+10,fh+10)); g.restore();
+  // watermark
+  g.save(); g.textAlign='center'; g.textBaseline='middle'; const fs=Math.min(fh*.15,fw*.07);
+  g.fillStyle='rgba(0,0,0,.18)'; g.font=`700 ${fs}px Cinzel, Georgia, serif`;
+  if(g.letterSpacing!==undefined) g.letterSpacing=(fs*.18)+'px';
+  g.fillText('BHABHI THULLA',fx+fw/2,fy+fh/2-fs*.35);
+  if(g.letterSpacing!==undefined) g.letterSpacing=(fs*.08)+'px';
+  g.fillStyle='rgba(243,219,148,.22)'; g.font=`500 ${Math.max(10,fs*.32)}px Outfit, system-ui, sans-serif`;
+  g.fillText('MADE BY TOSHI WITH PLEASURE',fx+fw/2,fy+fh/2+fs*.55); g.restore();
+}
+
+/* ================= LAYOUT ================= */
+const L={};
+function layout(){
+  const gm=$('game'), W=gm.offsetWidth, H=gm.offsetHeight; if(!W||!H) return false;
+  const cw=Math.round(Math.max(44,Math.min(W*.08,H*.16,86))), ch=Math.round(cw*1.42);
+  Object.assign(L,{W,H,cw,ch});
+  const top=Math.max(36,H*.075), handH=ch+18;
+  L.table={x:W*.055,y:top,w:W*.89,h:Math.max(140,H-handH-top-4)};
+  L.cx=L.table.x+L.table.w/2; L.cy=L.table.y+L.table.h/2;
+  L.avs=Math.round(Math.max(40,Math.min(54,H*.12)));
+  gm.style.setProperty('--cw',cw+'px'); gm.style.setProperty('--ch',ch+'px'); gm.style.setProperty('--avs',L.avs+'px');
+  $('me').style.setProperty('--av',Math.round(L.avs*.9)+'px');
+  return true;
+}
+function pIndex(id){ return S.players.findIndex(p=>p.id===id); }
+function pOf(id){ return S.players.find(p=>p.id===id)||{name:'?'}; }
+function seatAngle(pid){ const n=S.players.length, me=pIndex(S.you), i=pIndex(pid), pos=((i-me)%n+n)%n; return (90+pos*360/n)*Math.PI/180; }
+function seatXY(pid){ const a=seatAngle(pid); return [L.cx+L.table.w*.465*Math.cos(a), L.cy+L.table.h*.43*Math.sin(a)]; }
+function trickXY(pid){ const a=seatAngle(pid); return [L.cx+L.table.w*.2*Math.cos(a), L.cy+L.table.h*.13*Math.sin(a)]; }
+function meXY(){ const m=$('me'); return [m.offsetLeft+m.offsetWidth/2, m.offsetTop+m.offsetHeight*.35]; }
+function handXY(i,n){
+  const left=12+L.avs+44, avail=L.W-left-12, cw=L.cw;
+  const step=n>1?Math.min(cw*.64,(avail-cw)/(n-1)):0, total=cw+step*(n-1);
+  const x0=left+(avail-total)/2+cw/2, off=n>1?(i-(n-1)/2)/((n-1)/2):0;
+  return [x0+i*step, L.H-L.ch/2-8+off*off*6, off*5];
+}
+
+/* ================= SPRITES ================= */
+const SP=new Map(); let pileCount=0, dealing=false, drag=null;
+function mkSprite(c){
+  const el=document.createElement('div'); el.className='sp notr down';
+  el.innerHTML=`<div class="in"><div class="f" style="background-image:url(${faceURL(c)})"></div><div class="b" style="background-image:url(${backURL()})"></div></div>`;
+  el.dataset.id=cid(c); $('sprites').appendChild(el); return {el,c};
+}
+function tf(sp,x,y,r,s,z){ sp.el.style.transform=`translate3d(${(x-L.cw/2).toFixed(1)}px,${(y-L.ch/2).toFixed(1)}px,0) rotate(${r.toFixed(1)}deg) scale(${s})`; if(z!=null) sp.el.style.zIndex=z; }
+function arm(sp){ void sp.el.offsetWidth; sp.el.classList.remove('notr'); }
+function clearSprites(){ SP.forEach(sp=>sp.el.remove()); SP.clear(); $('sprites').innerHTML=''; pileCount=0; renderPile(); }
+function renderPile(){
+  const n=Math.min(6,Math.ceil(pileCount/4))||((S&&!S.firstTrick&&S.state!=='lobby')?2:0), p=$('pile'); if(p.childElementCount===n) return;
+  p.innerHTML=Array.from({length:n},(_,i)=>`<i style="background-image:url(${backURL()});transform:translate(${(L.cx-L.cw/2+((i*7)%9-4)).toFixed(0)}px,${(L.cy-L.ch/2-i*1.5).toFixed(0)}px) rotate(${(i*23)%26-13}deg) scale(.8)"></i>`).join('');
+}
+function syncCards(){
+  if(!L.W) return;
+  const want=new Map();
+  S.hand.forEach((c,i)=>want.set(cid(c),{k:'hand',c,i,n:S.hand.length}));
+  S.trick.forEach((t,k)=>want.set(cid(t.card),{k:'trick',c:t.card,pid:t.pid,i:k,th:t.thulla}));
+  const ev=S.lastEvent; let li=0;
+  for(const [id,sp] of SP){
+    if(want.has(id)) continue;
+    SP.delete(id); sp.el.classList.remove('hand','ok','dim','th','drag');
+    const d=li++*70; sp.el.style.transitionDelay=d+'ms';
+    if(ev&&ev.type==='thulla'){
+      const to=ev.toId||(S.players.find(p=>p.name===ev.to)||{}).id;
+      const [x,y]=(to&&to!==S.you&&pIndex(to)>=0)?seatXY(to):meXY();
+      sp.el.classList.add('slow','down'); tf(sp,x,y,(Math.random()*60-30),.32,190); sp.el.style.opacity='0';
+      setTimeout(()=>sp.el.remove(),d+900);
+    } else {
+      sp.el.classList.add('down'); tf(sp,L.cx+(Math.random()*16-8),L.cy+(Math.random()*12-6),Math.random()*40-20,.8,40);
+      pileCount++; setTimeout(()=>{ sp.el.remove(); renderPile(); },d+650);
+    }
+  }
+  const myTurn=S.turn===S.you;
+  for(const [id,w] of want){
+    let sp=SP.get(id);
+    if(!sp){
+      sp=mkSprite(w.c); SP.set(id,sp);
+      if(w.k==='trick'){ const [x,y]=w.pid===S.you?meXY():seatXY(w.pid); tf(sp,x,y,0,.4,150); }
+      else tf(sp,L.cx,L.cy,0,.7,150);
+      arm(sp);
+    }
+    if(drag && drag.id===id) continue;
+    sp.el.style.transitionDelay='';
+    if(w.k==='hand'){
+      const [x,y,r]=handXY(w.i,w.n), ok=myTurn&&playable(w.c), sel=selected===id;
+      sp.el.classList.add('hand'); sp.el.classList.toggle('ok',ok&&!sel); sp.el.classList.toggle('dim',myTurn&&!ok); sp.el.classList.remove('th','slow');
+      tf(sp,x,y-(sel?26:ok?6:0),r,1,100+w.i);
+      if(!dealing) sp.el.classList.remove('down');
+    } else {
+      const [x,y]=trickXY(w.pid), r=((cid(w.c).charCodeAt(0)*7+w.c.r*13)%24)-12;
+      sp.el.classList.remove('hand','ok','dim','down','slow'); sp.el.classList.toggle('th',!!w.th);
+      tf(sp,x,y,w.th?r*1.6:r,w.th?1:.86,60+w.i);
+    }
+  }
+}
+function dealAnim(){
+  clearSprites(); dealing=true;
+  const n=S.hand.length, opp=S.players.filter(p=>p.id!==S.you), tmp=[];
+  S.hand.forEach((c,i)=>{ const sp=mkSprite(c); SP.set(cid(c),sp); tf(sp,L.cx,L.cy,0,.7,100+i); });
+  opp.forEach((p,j)=>{ for(let k=0;k<4;k++){ const el=document.createElement('div'); el.className='sp notr down';
+    el.innerHTML=`<div class="in"><div class="f"></div><div class="b" style="background-image:url(${backURL()})"></div></div>`;
+    $('sprites').appendChild(el); const sp={el}; tf(sp,L.cx,L.cy,0,.7,90); tmp.push([sp,p.id,(k*opp.length+j)*80]); } });
+  void $('sprites').offsetWidth;
+  tmp.forEach(([sp,pid,d])=>{ sp.el.classList.remove('notr'); sp.el.style.transitionDelay=d+'ms'; const [x,y]=seatXY(pid); tf(sp,x,y,0,.32); sp.el.style.opacity='0'; setTimeout(()=>sp.el.remove(),d+700); });
+  let i=0;
+  for(const [,sp] of SP){ const d=i*70; sp.el.classList.remove('notr'); sp.el.style.transitionDelay=d+'ms';
+    const [x,y,r]=handXY(i,n); tf(sp,x,y,r,1); setTimeout(()=>{ sp.el.classList.remove('down'); sp.el.style.transitionDelay=''; },d+420); i++; }
+  sfx.deal(n);
+  setTimeout(()=>{ dealing=false; if(S&&S.state==='playing') syncCards(); },n*70+700);
+}
+
+/* ================= THULLA FX ================= */
+function thullaFX(ev){
+  const gm=$('game'), fx=$('fx');
+  gm.classList.remove('shake'); void gm.offsetWidth; gm.classList.add('shake');
+  const fl=$('flash'); fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
+  const last=S.trick[S.trick.length-1], [x,y]=last?trickXY(last.pid):[L.cx,L.cy];
+  ['wave','wave w2'].forEach(c=>{ const w=document.createElement('div'); w.className=c; w.style.left=x+'px'; w.style.top=y+'px'; fx.appendChild(w); setTimeout(()=>w.remove(),1000); });
+  for(let i=0;i<22;i++){ const s=document.createElement('div'); s.className='spark'; const a=Math.random()*Math.PI*2, d=60+Math.random()*140;
+    s.style.left=x+'px'; s.style.top=y+'px'; s.style.setProperty('--dx',Math.cos(a)*d+'px'); s.style.setProperty('--dy',Math.sin(a)*d+'px');
+    s.style.background=i%3?'#FF6A72':'#F3DB94'; s.style.animationDelay=(Math.random()*80)+'ms'; fx.appendChild(s); setTimeout(()=>s.remove(),1100); }
+  $('stampSub').textContent=`${ev.to} picks up ${ev.n} cards`;
+  const st=$('stamp'); st.classList.remove('go'); void st.offsetWidth; st.classList.add('go');
+  const to=ev.toId||(S.players.find(p=>p.name===ev.to)||{}).id;
+  const seat=to===S.you?$('me'):$('seats').querySelector(`[data-pid="${CSS.escape(to||'')}"]`);
+  if(seat){ seat.classList.remove('hit'); void seat.offsetWidth; seat.classList.add('hit'); }
+  sfx.thulla(); if(navigator.vibrate) navigator.vibrate([90,50,160,40,60]);
+}
+
+/* ================= SOUND ================= */
+let actx=null, noiseBuf=null;
+function ac(){ return actx||(actx=new (window.AudioContext||window.webkitAudioContext)()); }
+function tone(f,d,type='sine',vol=.15,delay=0,f2){ if(!soundOn) return;
+  try{ const a=ac(), t=a.currentTime+delay, o=a.createOscillator(), gn=a.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    gn.gain.setValueAtTime(vol,t); gn.gain.exponentialRampToValueAtTime(.001,t+d); o.connect(gn); gn.connect(a.destination); o.start(t); o.stop(t+d); }catch(e){} }
+function noise(d,vol=.2,delay=0,freq=1200){ if(!soundOn) return;
+  try{ const a=ac(); if(!noiseBuf){ noiseBuf=a.createBuffer(1,a.sampleRate,a.sampleRate); const ch=noiseBuf.getChannelData(0); for(let i=0;i<ch.length;i++) ch[i]=Math.random()*2-1; }
+    const t=a.currentTime+delay, s=a.createBufferSource(), f=a.createBiquadFilter(), gn=a.createGain(); s.buffer=noiseBuf; f.type='bandpass'; f.frequency.value=freq;
+    gn.gain.setValueAtTime(vol,t); gn.gain.exponentialRampToValueAtTime(.001,t+d); s.connect(f); f.connect(gn); gn.connect(a.destination); s.start(t); s.stop(t+d); }catch(e){} }
+const sfx={
+  card(){ noise(.12,.25,0,2400); tone(180,.08,'sine',.08) },
+  turn(){ tone(784,.14,'sine',.08); tone(1175,.2,'sine',.06,.1) },
+  thulla(){ noise(.5,.5,0,300); tone(120,.6,'sawtooth',.22,0,40); tone(60,.7,'sine',.35,.02,30); noise(.25,.3,.08,1800); tone(330,.35,'square',.06,.12,110) },
+  clear(){ noise(.25,.12,0,1600); tone(523,.12,'triangle',.05,.05) },
+  win(){ [523,659,784,1046].forEach((f,i)=>tone(f,.25,'triangle',.09,i*.12)) },
+  deal(n){ for(let i=0;i<Math.min(n,14);i++) noise(.06,.12,i*.07,2600) }
+};
+
+/* ================= OFFLINE ENGINE ================= */
+class LocalGame{
+  constructor(name,nBots){ const picks=shuffle(BOTS.slice()).slice(0,nBots);
+    this.players=[{id:'me',name,bot:false,hand:[],out:false}].concat(picks.map((b,i)=>({id:'bot'+i,name:b,bot:true,hand:[],out:false})));
+    this.state='lobby'; this.dead=false; this.timers=[]; this.trick=[]; this.trickOrder=[]; this.trickPos=0; this.leadSuit=null; }
+  later(fn,ms){ const t=setTimeout(()=>{ if(!this.dead) fn(); },ms); this.timers.push(t); }
+  destroy(){ this.dead=true; this.timers.forEach(clearTimeout); }
+  start(){ const deck=shuffle(SUITS.flatMap(s=>Array.from({length:13},(_,i)=>({s,r:i+2}))));
+    this.players.forEach(p=>{p.hand=[];p.out=false;}); deck.forEach((c,i)=>this.players[i%this.players.length].hand.push(c)); this.players.forEach(p=>sortHand(p.hand));
+    Object.assign(this,{state:'playing',finishOrder:[],bhabhi:null,firstTrick:true,resolving:false,lastEvent:null,voids:{}}); this.players.forEach(p=>this.voids[p.id]={});
+    this.beginTrick(this.players.findIndex(p=>p.hand.some(c=>c.s==='S'&&c.r===14))); this.emit(); this.tick(2300); }
+  beginTrick(li){ this.trick=[]; this.leadSuit=null; this.trickOrder=[]; const n=this.players.length; for(let k=0;k<n;k++){ const i=(li+k)%n, p=this.players[i]; if(!p.out&&p.hand.length) this.trickOrder.push(i); } this.trickPos=0; }
+  current(){ return this.players[this.trickOrder[this.trickPos]]; }
+  highestIdx(){ let b=null; for(const t of this.trick) if(t.card.s===this.leadSuit&&(!b||t.card.r>b.card.r)) b=t; return b.idx; }
+  play(pid,cardId){
+    if(this.state!=='playing') return 'The game has not started'; if(this.resolving) return 'Please wait...';
+    const idx=this.trickOrder[this.trickPos], p=this.players[idx]; if(!p||p.id!==pid) return 'It is not your turn';
+    const ci=p.hand.findIndex(c=>cid(c)===cardId); if(ci<0) return 'Card not found'; const card=p.hand[ci];
+    if(this.trick.length===0){ if(this.firstTrick&&!(card.s==='S'&&card.r===14)) return 'The first trick must start with the Ace of Spades ♠'; }
+    else if(card.s!==this.leadSuit&&p.hand.some(c=>c.s===this.leadSuit)) return `You must follow suit: ${SYM[this.leadSuit]}`;
+    p.hand.splice(ci,1); if(this.trick.length===0) this.leadSuit=card.s;
+    const off=this.trick.length>0&&card.s!==this.leadSuit; if(off) this.voids[p.id][this.leadSuit]=true;
+    const th=off&&!this.firstTrick; this.trick.push({pid:p.id,idx,card,thulla:th});
+    if(th) this.resolve('pickup',this.highestIdx(),p.name); else if(this.trickPos>=this.trickOrder.length-1) this.resolve('discard',this.highestIdx()); else this.trickPos++;
+    this.emit(); this.tick(); return null; }
+  resolve(type,wi,thrower){ this.resolving=true; const w=this.players[wi];
+    if(type==='pickup'){ this.lastEvent={type:'thulla',by:thrower,to:w.name,toId:w.id,n:this.trick.length,t:Date.now()};
+      if(Math.random()<.55){ const b=this.players.filter(p=>p.bot&&p!==w)[0]; if(b) this.later(()=>showEmoji(b.id,Math.random()<.5?'😂':'🔥'),900); }
+      if(w.bot&&Math.random()<.55) this.later(()=>showEmoji(w.id,Math.random()<.5?'😡':'😭'),1300);
+    } else this.lastEvent={type:'clear',to:w.name,toId:w.id,t:Date.now()};
+    const fast=this.players[0].out;
+    this.later(()=>{ if(type==='pickup'){ w.hand.push(...this.trick.map(t=>t.card)); sortHand(w.hand); new Set(this.trick.map(t=>t.card.s)).forEach(s=>{delete this.voids[w.id][s];}); }
+      this.trick=[]; this.firstTrick=false; this.resolving=false;
+      this.players.forEach(p=>{ if(!p.out&&p.hand.length===0){ p.out=true; this.finishOrder.push(p.id); } });
+      const active=this.players.filter(p=>!p.out);
+      if(active.length<=1){ this.state='over'; this.bhabhi=active[0]?active[0].id:null; this.emit(); return; }
+      let lead=wi; const n=this.players.length; while(this.players[lead].out) lead=(lead+1)%n; this.beginTrick(lead); this.emit(); this.tick(700);
+    },(type==='pickup'?2500:1500)*(fast?.6:1)); }
+  tick(extra=0){ if(this.state!=='playing'||this.resolving) return; const p=this.current(); if(!p||!p.bot) return; const fast=this.players[0].out;
+    this.later(()=>{ if(this.state!=='playing'||this.resolving||this.current()!==p) return; this.play(p.id,cid(this.botPick(p))); }, extra+(fast?350+Math.random()*200:800+Math.random()*700)); }
+  botPick(p){ const h=p.hand, of=s=>h.filter(c=>c.s===s), others=this.players.filter(o=>o!==p&&!o.out&&o.hand.length);
+    if(this.trick.length===0){ if(this.firstTrick) return h.find(c=>c.s==='S'&&c.r===14); let best=null,bs=1e9;
+      for(const s of SUITS){ const cs=of(s); if(!cs.length) continue; const risky=others.some(o=>this.voids[o.id][s]); const sc=(risky?100:0)+cs[0].r-cs.length*.6; if(sc<bs){bs=sc;best=cs[0];} } return best; }
+    const ls=this.leadSuit, fol=of(ls);
+    if(fol.length){ if(this.trickPos>=this.trickOrder.length-1||this.firstTrick) return fol[fol.length-1];
+      const top=Math.max(...this.trick.filter(t=>t.card.s===ls).map(t=>t.card.r)), under=fol.filter(c=>c.r<top); return under.length?under[under.length-1]:fol[fol.length-1]; }
+    return h.slice().sort((a,b)=>b.r-a.r||of(a.s).length-of(b.s).length)[0]; }
+  view(){ const cur=(this.state==='playing'&&!this.resolving)?this.current():null;
+    return {mode:'offline',code:'OFFLINE',hostId:'me',state:this.state,you:'me',players:this.players.map(p=>({id:p.id,name:p.name,bot:p.bot,count:p.hand.length,out:p.out,connected:true})),
+      hand:this.players[0].hand.slice(),trick:this.trick.map(t=>({pid:t.pid,card:t.card,thulla:t.thulla})),leadSuit:this.leadSuit,turn:cur?cur.id:null,firstTrick:this.firstTrick,
+      resolving:this.resolving,lastEvent:this.lastEvent,finishOrder:(this.finishOrder||[]).slice(),bhabhi:this.bhabhi}; }
+  emit(){ if(!this.dead) setState(this.view()); }
+}
+
+/* ================= ONLINE ================= */
+let ioLoading=null;
+function loadIO(){
+  if(window.io) return Promise.resolve();
+  if(ioLoading) return ioLoading;
+  const srcs=[BACKEND_URL+'/socket.io/socket.io.js','https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js']; let k=0;
+  ioLoading=new Promise((res,rej)=>{ const next=()=>{ if(k>=srcs.length){ ioLoading=null; return rej(new Error('io')); }
+    const sc=document.createElement('script'); sc.src=srcs[k++]; sc.async=true; sc.onload=()=>window.io?res():next(); sc.onerror=next; document.head.appendChild(sc); }; next(); });
+  return ioLoading;
+}
+function withSocket(fn){
+  if(socket) return fn(socket);
+  $('conn').textContent='Connecting to server...'; $('conn').classList.add('on');
+  loadIO().then(()=>{ const s=ensureSocket(); if(s) fn(s); }).catch(()=>{ $('conn').classList.remove('on'); toast('Could not reach the server. Check your internet or play vs Computer'); });
+}
+function ensureSocket(){
+  if(socket) return socket;
+  if(typeof io==='undefined') return null;
+  socket=io(BACKEND_URL,{transports:['websocket','polling']});
+  const wake=setTimeout(()=>{ $('conn').textContent='Connecting to server...'; $('conn').classList.add('on'); },1500);
+  socket.on('connect',()=>{ clearTimeout(wake); $('conn').classList.remove('on'); const r=store('bt_room'),n=store('bt_name'); if(r&&n) socket.emit('join',{code:r,name:n,token}); });
+  socket.on('disconnect',()=>{ if(S&&S.mode==='online'){ $('conn').textContent='Connection lost. Reconnecting...'; $('conn').classList.add('on'); } });
+  socket.on('err',m=>{ toast(m); if(S&&S.mode==='online'&&$('game').classList.contains('on')) syncCards(); if(/^Room not found/.test(m)){ unstore('bt_room'); S=null; show('home'); } });
+  socket.on('state',st=>{ if(local) return; st.mode='online'; store('bt_room',st.code); setState(st); });
+  socket.on('emoji',({pid,e})=>{ if(S&&S.mode==='online') showEmoji(pid,e); });
+  return socket;
+}
+
+/* ================= SCREENS ================= */
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id)); document.body.classList.toggle('ingame',id==='game'); }
+function goLandscape(){ try{ const el=document.documentElement; const lock=()=>screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{});
+  if(!document.fullscreenElement&&el.requestFullscreen&&!isStandalone()) el.requestFullscreen({navigationUI:'hide'}).then(lock).catch(()=>{}); else lock(); }catch(e){} }
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+
+/* SPLASH: pre-render all card art so the game runs smoothly */
+(function boot(){
+  const all=[]; SUITS.forEach(s=>{ for(let r=2;r<=14;r++) all.push({s,r}); });
+  let i=0, done=false;
+  const safe=fn=>{ try{ return fn(); }catch(e){ window.__errs.push('Card art: '+e.message); } };
+  const finish=()=>{ if(done) return; done=true; window.__booted=true; $('barFill').style.width='100%';
+    safe(()=>{ const f=$('fan').children; f[0].style.backgroundImage=`url(${faceURL({s:'S',r:14})})`; f[1].style.backgroundImage=`url(${backURL()})`; f[2].style.backgroundImage=`url(${faceURL({s:'H',r:13})})`; });
+    setTimeout(()=>{ if(!S) show('home'); },350); };
+  const stepFn=()=>{ const end=Math.min(all.length,i+6); for(;i<end;i++){ const c=all[i]; safe(()=>faceURL(c)); } $('barFill').style.width=(i/all.length*100)+'%';
+    if(i<all.length) setTimeout(stepFn,0); else finish(); };
+  safe(backURL);
+  setTimeout(stepFn,200);
+  setTimeout(finish,5000); // never get stuck on the splash
+})();
+
+/* INSTALL (PWA) */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; $('installBtn').classList.add('on'); });
+window.addEventListener('appinstalled',()=>{ deferredPrompt=null; $('installBtn').classList.remove('on'); toast('App installed! Open it from your home screen'); });
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+if(isIOS&&!isStandalone()) $('installBtn').classList.add('on');
+$('installBtn').onclick=async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice.catch(()=>{}); deferredPrompt=null; $('installBtn').classList.remove('on'); } else if(isIOS) $('iosOv').classList.add('on'); };
+$('iosClose').onclick=()=>$('iosOv').classList.remove('on');
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+/* HOME */
+$('name').value=store('bt_name')||'';
+const urlRoom=new URLSearchParams(location.search).get('room'); if(urlRoom) $('codeIn').value=urlRoom.toUpperCase();
+function renderSeg(){ $('botSeg').innerHTML=[1,2,3,4,5].map(n=>`<button class="${n===botCount?'on':''}" data-n="${n}">${n}</button>`).join(''); }
+renderSeg();
+$('botSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; botCount=+b.dataset.n; store('bt_bots',botCount); renderSeg(); };
+function getName(){ const n=$('name').value.trim(); if(!n){ toast('Please enter your name first'); $('name').focus(); return null; } store('bt_name',n); return n; }
+$('offlineBtn').onclick=()=>{ const n=getName(); if(!n) return; goLandscape(); if(local) local.destroy(); S=null; PS=null; local=new LocalGame(n,botCount); setTimeout(()=>local&&local.start(),150); };
+$('createBtn').onclick=()=>{ const n=getName(); if(!n) return; withSocket(s=>s.emit('create',{name:n,token})); };
+$('joinBtn').onclick=()=>{ const n=getName(); if(!n) return; const c=$('codeIn').value.trim().toUpperCase(); if(c.length<5) return toast('Enter the 5-letter room code'); withSocket(s=>s.emit('join',{code:c,name:n,token})); };
+$('codeIn').addEventListener('keydown',e=>{ if(e.key==='Enter') $('joinBtn').click(); });
+if(store('bt_room')&&store('bt_name')) withSocket(()=>{});
+
+/* LOBBY */
+$('startBtn').onclick=()=>{ goLandscape(); socket&&socket.emit('start'); };
+$('leaveBtn').onclick=()=>goHome();
+$('shareBtn').onclick=async()=>{ const link=location.origin+location.pathname+'?room='+S.code, text=`Join my Bhabhi Thulla game! 🃏 Room code: ${S.code}\n${link}`;
+  if(navigator.share){ try{ await navigator.share({title:'Bhabhi Thulla',text,url:link}); return; }catch(e){} }
+  try{ await navigator.clipboard.writeText(text); toast('Invite link copied'); }catch(e){ prompt('Copy this link:',link); } };
+function avHTML(p,i){ return `<div class="av" style="background:${AVBG[i%AVBG.length]}">${esc((p.name||'?')[0].toUpperCase())}</div>`; }
+function renderLobby(){
+  $('lCode').textContent=S.code;
+  $('lPlayers').innerHTML=S.players.map((p,i)=>`<div class="lp">${avHTML(p,i)}<div class="nm">${esc(p.name)}${p.id===S.you?' (you)':''}</div><div class="host">${p.id===S.hostId?'Host':'&nbsp;'}</div></div>`).join('');
+  const host=S.hostId===S.you; $('startBtn').style.display=host?'':'none';
+  $('lHint').textContent=S.players.length<2?'At least 2 players are needed. Invite your friends.':host?`${S.players.length} players ready`:'Waiting for the host to start...';
+}
+
+/* CONTROLS */
+function goHome(){
+  if(S&&S.mode==='online'){ if(S.state==='playing'&&!confirm('Leave this game? Your cards will be shared among the other players.')) return; socket&&socket.emit('leave'); unstore('bt_room'); history.replaceState(null,'',location.pathname); }
+  if(local){ if(S&&S.state==='playing'&&!confirm('Leave this game and go back to the menu?')) return; local.destroy(); local=null; }
+  S=null; PS=null; clearSprites(); $('resOv').classList.remove('on'); show('home');
+}
+$('backBtn').onclick=goHome;
+$('homeBtn').onclick=()=>{ if(local){ local.destroy(); local=null; S=null; PS=null; clearSprites(); $('resOv').classList.remove('on'); show('home'); } else goHome(); };
+$('againBtn').onclick=()=>{ $('resOv').classList.remove('on'); if(local) local.start(); else socket&&socket.emit('start'); };
+$('rulesBtn').onclick=()=>$('rulesOv').classList.add('on');
+$('rulesClose').onclick=()=>$('rulesOv').classList.remove('on');
+$('soundBtn').onclick=()=>{ soundOn=!soundOn; store('bt_sound',soundOn?'1':'0'); $('soundBtn').classList.toggle('off',!soundOn); if(soundOn) sfx.card(); };
+$('soundBtn').classList.toggle('off',!soundOn);
+$('fsBtn').onclick=async()=>{ try{ if(!document.fullscreenElement) goLandscape(); else await document.exitFullscreen(); }catch(e){} };
+$('emojis').innerHTML=EMOJIS.map(e=>`<button data-e="${e}">${e}</button>`).join('');
+$('emoBtn').onclick=()=>$('emojis').classList.toggle('on');
+$('emojis').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; $('emojis').classList.remove('on'); if(local) showEmoji('me',b.dataset.e); else socket&&socket.emit('emoji',{e:b.dataset.e}); };
+document.addEventListener('click',e=>{ if(!e.target.closest('#emojis')&&!e.target.closest('#emoBtn')) $('emojis').classList.remove('on'); });
+function showEmoji(pid,e){ if(!S||!L.W) return; const b=document.createElement('div'); b.className='bubble'; b.textContent=e;
+  const [x,y]=pid===S.you?meXY():seatXY(pid); b.style.left=x+'px'; b.style.top=(y-L.avs*.4)+'px'; $('game').appendChild(b); setTimeout(()=>b.remove(),2100); }
+function playable(c){ if(!S||S.turn!==S.you) return false; if(S.trick.length===0) return S.firstTrick?(c.s==='S'&&c.r===14):true; return S.hand.some(h=>h.s===S.leadSuit)?c.s===S.leadSuit:true; }
+function whyNot(){ return S.firstTrick&&S.trick.length===0?'The first trick must start with the Ace of Spades ♠':`You must follow suit: ${SYM[S.leadSuit]} ${SNAME[S.leadSuit]}`; }
+function doPlay(id){ selected=null; sfx.card(); if(local){ const err=local.play('me',id); if(err){ toast(err); syncCards(); } } else if(socket) socket.emit('play',{cardId:id}); }
+
+/* ===== Swipe / tap to play ===== */
+const rotated=()=>document.body.classList.contains('ingame')&&matchMedia('(orientation: portrait)').matches;
+$('sprites').addEventListener('pointerdown',e=>{
+  const el=e.target.closest('.sp.hand'); if(!el||!S||dealing||drag) return;
+  const id=el.dataset.id, sp=SP.get(id); if(!sp) return;
+  const i=S.hand.findIndex(h=>cid(h)===id); const [bx,by,br]=handXY(i,S.hand.length);
+  drag={id,sp,el,x0:e.clientX,y0:e.clientY,bx,by,br,moved:false,pid:e.pointerId};
+  try{ el.setPointerCapture(e.pointerId); }catch(_){}
+});
+$('sprites').addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.pid) return;
+  let dx=e.clientX-drag.x0, dy=e.clientY-drag.y0; if(rotated()) [dx,dy]=[dy,-dx];
+  if(!drag.moved && Math.hypot(dx,dy)<9) return;
+  if(!drag.moved){ drag.moved=true; drag.el.classList.add('notr','drag'); }
+  tf(drag.sp,drag.bx+dx,drag.by+dy,drag.br*(1-Math.min(1,-dy/120)),1.08);
+});
+function endDrag(e,cancel){
+  if(!drag||(e&&e.pointerId!==drag.pid)) return;
+  const d=drag; drag=null; let dx=0,dy=0;
+  if(e){ dx=e.clientX-d.x0; dy=e.clientY-d.y0; if(rotated()) [dx,dy]=[dy,-dx]; }
+  d.el.classList.remove('drag'); void d.el.offsetWidth; d.el.classList.remove('notr');
+  const c=S&&S.hand.find(h=>cid(h)===d.id);
+  if(!c||cancel){ syncCards(); return; }
+  if(d.moved){
+    if(dy<-Math.max(45,L.ch*.55)){
+      if(S.turn!==S.you){ toast('It is not your turn'); syncCards(); return; }
+      if(!playable(c)){ toast(whyNot()); syncCards(); return; }
+      doPlay(d.id); return;
+    }
+    syncCards(); return;
+  }
+  // tap
+  if(S.turn!==S.you){ toast('It is not your turn'); return; }
+  if(!playable(c)){ toast(whyNot()); return; }
+  if(selected===d.id) doPlay(d.id); else { selected=d.id; syncCards(); renderStatus(); }
+}
+$('sprites').addEventListener('pointerup',e=>endDrag(e,false));
+$('sprites').addEventListener('pointercancel',e=>endDrag(e,true));
+
+/* ================= RENDER ================= */
+let seatsKey='', laidFor='', resPending=false;
+function setState(st){ PS=S; S=st; render(); }
+function render(){
+  if(!S) return;
+  if(S.state==='lobby'&&S.mode==='online'){ show('lobby'); renderLobby(); clearSprites(); $('resOv').classList.remove('on'); return; }
+  const firstShow=!$('game').classList.contains('on'); show('game');
+  if(firstShow||laidFor!==sizeKey()) relayout();
+  const newGame=S.state==='playing'&&(!PS||PS.state!=='playing'||PS.mode!==S.mode)&&S.firstTrick&&S.trick.length===0;
+  const myTurn=S.turn===S.you; if(!myTurn) selected=null;
+  renderSeats(); renderStatus();
+  if(newGame) dealAnim(); else syncCards();
+  renderPile();
+  if(myTurn&&!lastTurnMine){ sfx.turn(); if(navigator.vibrate) navigator.vibrate(35); }
+  lastTurnMine=myTurn;
+  if(PS&&S.trick.length>(PS.trick?PS.trick.length:0)&&S.trick[S.trick.length-1].pid!==S.you) setTimeout(()=>sfx.card(),300);
+  if(S.lastEvent&&S.lastEvent.t!==lastEventT){
+    const ev=S.lastEvent; lastEventT=ev.t;
+    if(ev.type==='thulla') setTimeout(()=>thullaFX(ev),380); else setTimeout(()=>sfx.clear(),900);
+  }
+  if(S.state==='over') renderResult(); else $('resOv').classList.remove('on');
+}
+const sizeKey=()=>{ const g=$('game'); return g.offsetWidth+'x'+g.offsetHeight; };
+function relayout(){
+  if(!layout()) return; laidFor=sizeKey(); drawTable(); seatsKey=''; $('pile').innerHTML='';
+  if(S&&S.state!=='lobby'){ renderSeats(); renderStatus(); SP.forEach(sp=>sp.el.classList.add('notr')); syncCards(); SP.forEach(sp=>arm(sp)); renderPile(); }
+}
+function renderSeats(){
+  const key=S.players.map(p=>p.id+p.name).join('|')+L.W+'x'+L.H;
+  if(key!==seatsKey){ seatsKey=key;
+    $('seats').innerHTML=S.players.map((p,i)=>{ if(p.id===S.you) return ''; const [x,y]=seatXY(p.id);
+      return `<div class="seat" data-pid="${esc(p.id)}" style="transform:translate(${x}px,${y}px) translate(-50%,-50%)"><div class="avw">${RING}${avHTML(p,i)}<div class="cnt"></div><span class="dc"></span></div>
+        <div class="plate">${esc(p.name)}</div><div class="tag">${p.bot?'Computer':'&nbsp;'}</div></div>`; }).join('');
+    const mi=pIndex(S.you), me=S.players[mi]||{name:''};
+    $('me').innerHTML=`<div class="avw">${RING}${avHTML(me,mi)}<div class="cnt"></div></div><div class="plate">${esc(me.name)}</div><div class="tag">You</div>`;
+  }
+  $('seats').querySelectorAll('.seat').forEach(el=>{ const p=S.players.find(x=>x.id===el.dataset.pid); if(!p) return;
+    el.classList.toggle('turn',p.id===S.turn); el.classList.toggle('out',p.out); el.classList.toggle('offl',!p.connected);
+    const c=el.querySelector('.cnt'), t=p.out?'✓':String(p.count); if(c.textContent!==t) c.textContent=t;
+    const tg=el.querySelector('.tag'), tt=p.out?'Safe':(p.bot?'Computer':'\u00a0'); if(tg.textContent!==tt) tg.textContent=tt; });
+  const me=S.players.find(p=>p.id===S.you)||{}; $('me').classList.toggle('turn',S.turn===S.you); $('me').classList.toggle('out',!!me.out);
+  const mc=$('me').querySelector('.cnt'); if(mc){ const t=me.out?'✓':String(S.hand.length); if(mc.textContent!==t) mc.textContent=t; }
+  $('roomtag').innerHTML=S.mode==='offline'?'vs Computer':`Room <b>${esc(S.code)}</b>`;
+}
+function renderStatus(){
+  const myTurn=S.turn===S.you; let st='';
+  if(S.state==='over') st='Game over';
+  else if(S.resolving&&S.lastEvent) st=S.lastEvent.type==='thulla'?'':`Trick cleared · ${esc(S.lastEvent.to)} leads next`;
+  else if(myTurn) st=selected?'Tap again or swipe up to play':'Your turn · swipe a card up';
+  else if(S.turn) st=`${esc(pOf(S.turn).name)}'s turn`;
+  else if(!S.hand.length&&S.state==='playing') st='You are safe! Watch the rest of the game';
+  if(S.state==='playing'&&!S.resolving){
+    if(S.leadSuit) st+=` · Lead <span class="ls" style="color:${isRed(S.leadSuit)?(myTurn?'#8E1420':'#FF7A82'):(myTurn?'#15120C':'#fff')}">${SYM[S.leadSuit]}</span>`;
+    else if(S.firstTrick) st+=' · First trick, no Thulla';
+  }
+  const el=$('status'); el.innerHTML=st; el.classList.toggle('mine',myTurn&&!S.resolving); el.style.display=st?'':'none';
+  el.style.transform=`translate(${L.cx}px,${L.table.y+L.table.h-14}px) translate(-50%,-50%)`;
+}
+function renderResult(){
+  const b=S.bhabhi?pOf(S.bhabhi).name:null, meB=S.bhabhi===S.you;
+  $('rEmoji').textContent=meB?'😭':(b?'😂':'🤝');
+  $('rTitle').textContent=b?(meB?'You are the Bhabhi!':`${b} is the Bhabhi!`):'Draw! No Bhabhi this time';
+  $('rList').innerHTML=S.finishOrder.map(id=>`<li>${esc(pOf(id).name)}${id===S.you?' (you)':''}</li>`).join('');
+  const host=S.hostId===S.you; $('againBtn').style.display=host?'':'none'; $('rWait').textContent=host?'':'Waiting for the host to start a new game...';
+  if(!$('resOv').classList.contains('on')&&!resPending){ resPending=true; setTimeout(()=>{ resPending=false; if(S&&S.state==='over'){ if(!meB) sfx.win(); $('resOv').classList.add('on'); } },900); }
+}
+let rzT; function onResize(){ clearTimeout(rzT); rzT=setTimeout(()=>{ if(S&&$('game').classList.contains('on')&&laidFor!==sizeKey()) relayout(); },120); }
+window.addEventListener('resize',onResize); window.addEventListener('orientationchange',()=>setTimeout(onResize,300));
+if(document.fonts) document.fonts.ready.then(()=>{ if(S&&$('game').classList.contains('on')&&L.W) drawTable(); });
+</script>
+</body>
+</html>
